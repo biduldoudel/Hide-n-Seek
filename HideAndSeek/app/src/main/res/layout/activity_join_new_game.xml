@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="367dp"
+        android:layout_height="495dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="73dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Enter the Game Code (6 digits)"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editTextCodeNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="center_horizontal"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/buttonJoin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Join the Game !" />
+
+        <Button
+            android:id="@+id/buttonCreatePlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create User !" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="57dp" />
+
+        <TextView
+            android:id="@+id/textViewPeopleEnrolled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="18sp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="107dp" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

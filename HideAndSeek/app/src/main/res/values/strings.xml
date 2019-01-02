@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">HideAndSeek</string>
+    <string name="title_activity_register_join_game">RegisterJoinGame</string>
+
+    <array name="role">
+        <item>Player</item>
+        <item>Master</item>
+    </array>
+
+    <array name="team">
+        <item>Zombie</item>
+        <item>Survival</item>
+    </array>
+
+    <array name="statut">
+        <item>Waiting</item>
+        <item>Running</item>
+        <item>Ended</item>
+    </array>
+
+    <array name="directionCommand">
+        <item>Right</item>
+        <item>Left</item>
+        <item>Forward</item>
+        <item>Backward</item>
+    </array>
+
+    <array name="speedCommand">
+        <item>Stay</item>
+        <item>Run</item>
+        <item>Move</item>
+    </array>
+
+</resources>
