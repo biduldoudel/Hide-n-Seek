@@ -2,6 +2,7 @@ package com.example.jonat.hideandseek;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,13 +20,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.Random;
 
 public class RegisterNewGame extends AppCompatActivity {
 
     private static final FirebaseDatabase databaseGame = FirebaseDatabase.getInstance();
-    private static final DatabaseReference databaseReference = databaseGame.getReference("games");
-    private static final DatabaseReference gameRef = databaseReference.push();
+    private static final DatabaseReference gamesGetRef = databaseGame.getReference("games");
+    private static final DatabaseReference gamesRef = gamesGetRef.push();
 
     private static final DatabaseReference gameNumbersField = databaseGame.getReference("gameNumbers");
     private static final int REGISTER_PROFILE = 1;
@@ -48,8 +50,9 @@ public class RegisterNewGame extends AppCompatActivity {
         buttonNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gameCode=getGameCode();
                 addGameToFirebaseDB();
-                Intent intent = new Intent(RegisterNewGame.this, JoinNewGame.class);
+                Intent intent = new Intent(RegisterNewGame.this, RegisterNewPlayer.class);
                 intent.putExtra("gameCode", gameCode);
                 intent.putExtra("RegisterNewGame", true);
                 startActivity(intent);
@@ -58,17 +61,13 @@ public class RegisterNewGame extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
     private void addGameToFirebaseDB() {
-        int playerNumber = Integer.parseInt(textViewPlayerNumber.getText().toString()); // get the player number from the textView
-        gameCode = getGameCode();
-        String gameId = databaseReference.push().getKey(); // We get a unique key for a game !
-        myGame = new Game(gameId, playerNumber, gameCode);// We create a new game (Class Game with the number of player - add location too...)
-        databaseReference.child(gameId).setValue(myGame); // Save to Firebase !
+
+        Game game = new Game(4, gameCode);
+        gamesRef.setValue(game);
     }
 
 

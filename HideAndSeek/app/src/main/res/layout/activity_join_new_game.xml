@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+<!---->
         <Space
             android:layout_width="match_parent"
             android:layout_height="73dp" />
@@ -34,7 +34,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextCodeNumber"
+            android:id="@+id/editTextCodeNumber2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -71,4 +71,5 @@
             android:layout_width="match_parent"
             android:layout_height="107dp" />
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

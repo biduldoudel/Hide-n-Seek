@@ -2,6 +2,12 @@
     <string name="app_name">HideAndSeek</string>
     <string name="title_activity_register_join_game">RegisterJoinGame</string>
 
+    <string-array name="OverseerRules">
+        <item>You are the overseer</item>
+    <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
+        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+    </string-array>
+
     <array name="role">
         <item>Player</item>
         <item>Master</item>

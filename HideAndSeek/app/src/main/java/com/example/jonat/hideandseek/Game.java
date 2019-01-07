@@ -13,8 +13,8 @@ public class Game implements Serializable {
     int instantPlayerNumber;
 
 
-    public Game(String gameId, int playerNumber, String gameCode) {
-        this.gameId = gameId;
+    public Game(int playerNumber, String gameCode) {
+        //this.gameId = gameId;
         this.gameCode = gameCode;
         this.gameStatus = "Waiting";
         this.instantPlayerNumber = 0;
@@ -28,6 +28,8 @@ public class Game implements Serializable {
     public String getGameCode() {
         return this.gameCode;
     }
+
+    public String getGameStatus(){return this.gameStatus;}
 
 
 }

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         buttonJoinGame.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, JoinNewGame.class);
+                Intent intent = new Intent(MainActivity.this, RegisterNewPlayer.class);
                 intent.putExtra("RegisterNewGame", false);
                 startActivity(intent);
 

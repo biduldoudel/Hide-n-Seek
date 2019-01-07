@@ -26,7 +26,7 @@ public class JoinNewGame extends AppCompatActivity {
     private static final FirebaseDatabase databaseGame = FirebaseDatabase.getInstance();
     private static final DatabaseReference databaseReference = databaseGame.getReference("games");
 
-    private String gameId = null;
+    private String gameId = "";
     private String gameCode; // We get it from the editText
     private int instantPlayerNumber;
 
@@ -43,7 +43,7 @@ public class JoinNewGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_new_game);
 
-        // Listen to the intent
+       // Listen to the intent
         Bundle extras = getIntent().getExtras();
 
         // If we are the creator (from RegisterNewGame Activity and not from MainActivity)
@@ -79,6 +79,8 @@ public class JoinNewGame extends AppCompatActivity {
                     // read database and get the playerNumber - for all !
                     Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
                     getGameData();
+                     Intent intent = new Intent(JoinNewGame.this, RulesRecall.class);
+                     startActivity(intent);
                 }
             }
         });
@@ -117,13 +119,15 @@ public class JoinNewGame extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String gameCodeDB;
+                String gameStatusDB;
 
                 for (final DataSnapshot game : dataSnapshot.getChildren()) {
                     foundGame = false;
-                    String gameCodeDB = game.child("gameCode").getValue(String.class);
-                    String gameStatusDB = game.child("gameStatus").getValue(String.class);
+                    gameCodeDB = game.child("gameCode").getValue(String.class);
+                    //gameStatusDB = game.child("gameStatus").getValue(String.class);
 
-                    if (gameCodeDB.equals(gameCode) && gameStatusDB.equals("Waiting")) {
+                    if (gameCodeDB.equals(gameCode) /*&& gameStatusDB.equals("Waiting")*/) {
                         gameId = game.getKey();
                         buttonJoingame.setEnabled(false);
                         editTextCodeNumber.setEnabled(false);
@@ -133,7 +137,7 @@ public class JoinNewGame extends AppCompatActivity {
                     }
                 }
 
-                if (foundGame){
+                /*if (foundGame){
 
                     // Get the player number !
                     int playerNumber = dataSnapshot.child(gameId).child("playerNumber").getValue(Integer.class);
@@ -158,7 +162,7 @@ public class JoinNewGame extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Game not found !", Toast.LENGTH_LONG).show();
-                }
+                }*/
 
             }
 

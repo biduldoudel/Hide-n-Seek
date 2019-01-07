@@ -11,6 +11,10 @@ public class Player implements Serializable {
     protected String role;
 
 
+    public Player(){
+
+    }
+
     public Player(String id, String username, String team, String role) {
         // When you create a new Profile, it's good to build it based on username and password
         this.playerId = id;
