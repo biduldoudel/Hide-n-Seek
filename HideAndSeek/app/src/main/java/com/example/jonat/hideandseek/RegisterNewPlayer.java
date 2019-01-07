@@ -36,6 +36,9 @@ public class RegisterNewPlayer extends AppCompatActivity {
 
     String gameId;
     private String playerId;
+    private String username;
+    private String role;
+    private String team;
     private TextView editTextCodeNumber;
     private String gameCode;
     private boolean foundGame;
@@ -107,8 +110,12 @@ public class RegisterNewPlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gameCode = editTextCodeNumber.getText().toString();
+                username = editTextUsername.getText().toString();
+                team = teamText.getText().toString();
+                role = roleText.getText().toString();
+
                 getGameData();
-                addPlayerToFirebaseDB();
+
                 if (switchRole.isChecked()) {
                     // Go to the master activity (Map...)
                     Intent intent = new Intent(RegisterNewPlayer.this, RulesRecall.class);
@@ -134,7 +141,7 @@ public class RegisterNewPlayer extends AppCompatActivity {
 
                 for (final DataSnapshot game : dataSnapshot.getChildren()) {
                     foundGame = false;
-                    gameCodeDB = game.child("GameCode").getValue(String.class);
+                    gameCodeDB = game.child("gameCode").getValue(String.class);
                     //gameStatusDB = game.child("gameStatus").getValue(String.class);
 
                     if (gameCodeDB.equals(gameCode) /*&& gameStatusDB.equals("Waiting")*/) {
@@ -143,6 +150,7 @@ public class RegisterNewPlayer extends AppCompatActivity {
                         editTextCodeNumber.setEnabled(false);
                         Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
                         foundGame = true;
+                        addPlayerToFirebaseDB();
                         break;
                     }
                 }
@@ -186,8 +194,8 @@ public class RegisterNewPlayer extends AppCompatActivity {
 
 
     private void addPlayerToFirebaseDB() {
-    Player player = new Player("test","test","test","test");
-   // gamesRef.child(gameId).setValue(player);
+    Player player = new Player(username, team, role);
+   gamesRef.child(gameId).child("players").child(username).setValue(player);
     }
 
 

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">HideAndSeek</string>
     <string name="title_activity_register_join_game">RegisterJoinGame</string>
+    <string name="google_places_api_key">AIzaSyDC33O0weUss_PPTa2x9DBXTd5Kpb5mxXs</string>
 
     <string-array name="OverseerRules">
         <item>You are the overseer</item>

@@ -15,12 +15,19 @@ public class Player implements Serializable {
 
     }
 
-    public Player(String id, String username, String team, String role) {
+    public Player(String username, String team, String role) {
         // When you create a new Profile, it's good to build it based on username and password
-        this.playerId = id;
         this.username = username;
         this.team = team;
         this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getTeam() {
+        return team;
     }
 
 

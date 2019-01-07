@@ -40,10 +40,10 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-       /* mMap = googleMap;
+       mMap = googleMap;
         LatLng currentLocation = new LatLng(latitude,longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title("test"));*/
+        mMap.addMarker(new MarkerOptions().position(currentLocation).title("test"));
     }
 
     @Override
