@@ -2,10 +2,29 @@
     <string name="app_name">HideAndSeek</string>
     <string name="title_activity_register_join_game">RegisterJoinGame</string>
     <string name="google_places_api_key">AIzaSyDC33O0weUss_PPTa2x9DBXTd5Kpb5mxXs</string>
+    <string name="WaitingFroPlayers">WaitingForPlayers</string>
 
     <string-array name="OverseerRules">
         <item>You are the overseer</item>
-    <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
+        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
+        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+    </string-array>
+
+    <string-array name="PsychicRules">
+        <item>You are the psychic</item>
+        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
+        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+    </string-array>
+
+    <string-array name="ZombieRules">
+        <item>You are a zombie</item>
+        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
+        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+    </string-array>
+
+    <string-array name="SurvivorRules">
+        <item>You are a runner</item>
+        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
         <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
     </string-array>
 

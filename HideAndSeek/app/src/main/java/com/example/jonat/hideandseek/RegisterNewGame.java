@@ -54,7 +54,7 @@ public class RegisterNewGame extends AppCompatActivity {
                 addGameToFirebaseDB();
                 Intent intent = new Intent(RegisterNewGame.this, RegisterNewPlayer.class);
                 intent.putExtra("gameCode", gameCode);
-                intent.putExtra("RegisterNewGame", true);
+                intent.putExtra("registerNewGame", true);
                 startActivity(intent);
             }
 
@@ -66,7 +66,8 @@ public class RegisterNewGame extends AppCompatActivity {
 
     private void addGameToFirebaseDB() {
 
-        Game game = new Game(4, gameCode);
+
+        Game game = new Game(4, gameCode, seekBarPlayerNumber.getProgress());
         gamesRef.setValue(game);
     }
 

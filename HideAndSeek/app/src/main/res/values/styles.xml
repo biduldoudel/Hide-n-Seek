@@ -17,7 +17,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:colorBackground">@color/common_google_signin_btn_text_dark_focused</item>
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="colorPrimaryDark">@color/common_google_signin_btn_text_dark_focused</item>
+        <item name="colorPrimary">@color/common_google_signin_btn_text_dark_focused</item>
+        <item name="colorAccent">@android:color/holo_red_dark</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

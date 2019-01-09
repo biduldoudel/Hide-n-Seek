@@ -1,10 +1,6 @@
 package com.example.jonat.hideandseek;
 
-import android.app.AutomaticZenRule;
 import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +14,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 public class RegisterNewPlayer extends AppCompatActivity {
@@ -42,7 +36,11 @@ public class RegisterNewPlayer extends AppCompatActivity {
     private TextView editTextCodeNumber;
     private String gameCode;
     private boolean foundGame;
-    private Button buttonStart;
+    private Button buttonReady;
+    private int nReadyPlayers;
+    private boolean playerRegistered;
+    private int nExpectedPlayers;
+    private ValueEventListener valueListener;
 
 
     @Override
@@ -50,14 +48,14 @@ public class RegisterNewPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_new_player);
 
-        buttonStart = findViewById(R.id.buttonStart);
+        buttonReady = findViewById(R.id.buttonReady);
 
         Bundle extras = getIntent().getExtras();
         gameId = extras.getString("gameId");
 
 
         // If we are the creator (from RegisterNewGame Activity and not from MainActivity)
-        if (extras.getBoolean("RegisterNewGame")) {
+        if (extras.getBoolean("registerNewGame")) {
             gameCode = extras.getString("gameCode");
 
 
@@ -87,7 +85,7 @@ public class RegisterNewPlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (switchTeam.isChecked()) {
-                    teamText.setText("Survival");
+                    teamText.setText("Survivor");
                 } else {
                     teamText.setText("Zombie");
                 }
@@ -100,13 +98,13 @@ public class RegisterNewPlayer extends AppCompatActivity {
                 if (switchRole.isChecked()) {
                     roleText.setText("Master");
                 } else {
-                    roleText.setText("Player");
+                    roleText.setText("Runner");
                 }
             }
         });
 
 
-        buttonStart.setOnClickListener(new View.OnClickListener() {
+        buttonReady.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gameCode = editTextCodeNumber.getText().toString();
@@ -114,26 +112,25 @@ public class RegisterNewPlayer extends AppCompatActivity {
                 team = teamText.getText().toString();
                 role = roleText.getText().toString();
 
-                getGameData();
+                updateDatabase();
 
-                if (switchRole.isChecked()) {
-                    // Go to the master activity (Map...)
-                    Intent intent = new Intent(RegisterNewPlayer.this, RulesRecall.class);
-                    startActivity(intent);
-                } else {
-                    // Go to the player activity
-                    Intent intent = new Intent(RegisterNewPlayer.this, RulesRecall.class);
-                    startActivity(intent);
-                }
+
             }
 
         });
 
 
     }
-    private void getGameData() {
 
-        gamesRef.addValueEventListener(new ValueEventListener() {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gamesRef.removeEventListener(valueListener);
+    }
+
+    private void updateDatabase() {
+
+        gamesRef.addValueEventListener(valueListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String gameCodeDB;
@@ -142,15 +139,46 @@ public class RegisterNewPlayer extends AppCompatActivity {
                 for (final DataSnapshot game : dataSnapshot.getChildren()) {
                     foundGame = false;
                     gameCodeDB = game.child("gameCode").getValue(String.class);
-                    //gameStatusDB = game.child("gameStatus").getValue(String.class);
+                    gameStatusDB = game.child("gameStatus").getValue(String.class);
 
                     if (gameCodeDB.equals(gameCode) /*&& gameStatusDB.equals("Waiting")*/) {
                         gameId = game.getKey();
-                        buttonStart.setEnabled(false);
+
+                        buttonReady.setEnabled(false);
+                        buttonReady.setText("Waiting for players");
                         editTextCodeNumber.setEnabled(false);
-                        Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
+
+                        //Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
                         foundGame = true;
-                        addPlayerToFirebaseDB();
+
+                        nReadyPlayers = dataSnapshot.child(gameId).child("nReadyPlayers").getValue(Integer.class);
+                        nExpectedPlayers = dataSnapshot.child(gameId).child("nExpectedPlayers").getValue(Integer.class);
+
+                        if (!playerRegistered && gameStatusDB.equals("WaitingForPlayers")) {
+                            if (nReadyPlayers >= nExpectedPlayers) {
+                                Toast.makeText(getApplicationContext(), "This game seems to be full", Toast.LENGTH_LONG).show();
+                            } else {
+                                addPlayerToFirebaseDB();
+                                nReadyPlayers++;
+                                gamesRef.child(gameId).child("nReadyPlayers").setValue(nReadyPlayers);
+                                playerRegistered = true;
+                                if (nReadyPlayers == nExpectedPlayers) {
+                                    gamesRef.child(gameId).child("gameStatus").setValue("RulesRecall");
+                                    gameStatusDB = "RulesRecall";
+                                }
+                            }
+                        }
+
+                        if (playerRegistered && gameStatusDB.equals("RulesRecall")) {
+                                // Go to the player activity
+                                gamesRef.child(gameId).child("nReadyPlayers").setValue(0);
+                                Intent intent = new Intent(RegisterNewPlayer.this, RulesRecall.class);
+                                intent.putExtra("role", role);
+                                intent.putExtra("team",team);
+                                intent.putExtra("gameId",gameId);
+                                intent.putExtra("username",username);
+                                startActivity(intent);
+                        }
                         break;
                     }
                 }
@@ -194,8 +222,8 @@ public class RegisterNewPlayer extends AppCompatActivity {
 
 
     private void addPlayerToFirebaseDB() {
-    Player player = new Player(username, team, role);
-   gamesRef.child(gameId).child("players").child(username).setValue(player);
+        Player player = new Player(username, team, role);
+        gamesRef.child(gameId).child("players").child(username).setValue(player);
     }
 
 

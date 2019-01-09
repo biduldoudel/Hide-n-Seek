@@ -9,6 +9,9 @@ public class Player implements Serializable {
     protected String username;
     protected String team;
     protected String role;
+    private double latitude;
+    private double longitude;
+    private String command;
 
 
     public Player(){
@@ -20,6 +23,9 @@ public class Player implements Serializable {
         this.username = username;
         this.team = team;
         this.role = role;
+        latitude = 0;
+        longitude = 0;
+        this.command = "";
     }
 
     public String getRole() {
@@ -30,5 +36,15 @@ public class Player implements Serializable {
         return team;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
 
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getCommand() {
+        return command;
+    }
 }

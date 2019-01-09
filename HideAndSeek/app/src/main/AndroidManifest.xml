@@ -44,7 +44,8 @@
         <activity
             android:name=".MasterPlayer"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".RunnerPlayer"></activity>
     </application>
 
 </manifest>
