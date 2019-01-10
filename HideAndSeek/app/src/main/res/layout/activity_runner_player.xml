@@ -26,12 +26,12 @@
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/command2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="TextView"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="TextView" />
 
     <Space
         android:layout_width="match_parent"

@@ -21,7 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class RunnerPlayer extends AppCompatActivity implements LocationListener{
+public class RunnerPlayer extends AppCompatActivity implements LocationListener {
 
     private static final FirebaseDatabase databaseGame = FirebaseDatabase.getInstance();
     private static final DatabaseReference gamesRef = databaseGame.getReference("games");
@@ -35,9 +35,10 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener{
     private String gameId;
     private String command;
     private TextView command1;
+    private TextView command2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runner_player);
 
@@ -57,6 +58,8 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener{
         gameId = intent.getExtras().getString("gameId");
         username = intent.getExtras().getString("username");
 
+        command1 = findViewById(R.id.command1);
+        command2 = findViewById(R.id.command2);
 
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
@@ -64,8 +67,11 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener{
         gamesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                command = dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class);
-                command1.setText(command);
+                if (command1.getText() != dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class)) {
+                    command2.setText(command1.getText());
+                    command = dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class);
+                    command1.setText(command);
+                }
             }
 
             @Override
@@ -74,7 +80,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener{
             }
         });
 
-        command1 = findViewById(R.id.command1);
+
     }
 
     @Override

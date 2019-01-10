@@ -12,6 +12,7 @@ public class Player implements Serializable {
     private double latitude;
     private double longitude;
     private String command;
+    private String lastCommand;
 
 
     public Player(){
@@ -44,7 +45,7 @@ public class Player implements Serializable {
         return longitude;
     }
 
-    public String getCommand() {
-        return command;
-    }
+    public String getCommand() {return command;}
+
+    public String getLastCommand() {return lastCommand;}
 }

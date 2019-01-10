@@ -18,5 +18,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center_horizontal"
-        android:fontFamily="@font/bloodpaint"/>
+        android:fontFamily="@font/bloodpaint"
+        />
 </android.support.constraint.ConstraintLayout>

@@ -49,6 +49,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mapReady=false;
     private String selectedPlayer;
     private Button forwardButton;
+    private String command;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,11 +115,65 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
-        forwardButton = findViewById(R.id.forwardButton);
-        forwardButton.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.forwardButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playersRef.child(selectedPlayer).child("command").setValue("Forward");
+                command+="forward";
+                playersRef.child(selectedPlayer).child("command").setValue(command);
+            }
+        });
+
+
+        findViewById(R.id.leftButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                command+="left";
+                playersRef.child(selectedPlayer).child("command").setValue(command);
+            }
+        });
+
+
+        findViewById(R.id.rigthButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                command+="right";
+                playersRef.child(selectedPlayer).child("command").setValue(command);
+            }
+        });
+
+
+        findViewById(R.id.backwardButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                command+="back";
+                playersRef.child(selectedPlayer).child("command").setValue(command);
+            }
+        });
+
+
+        findViewById(R.id.runButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                command="";
+                command+="Go ";
+                //playersRef.child(selectedPlayer).child("command").setValue("Run");
+            }
+        });
+
+
+        findViewById(R.id.stayButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playersRef.child(selectedPlayer).child("command").setValue("Stay there");
+            }
+        });
+
+
+        findViewById(R.id.carefulButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playersRef.child(selectedPlayer).child("command").setValue("Be careful!");
             }
         });
     }

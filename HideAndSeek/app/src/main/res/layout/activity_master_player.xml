@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MasterPlayer">
+    android:orientation="horizontal">
 
     <FrameLayout
         android:id="@+id/mapFrame"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:layout_weight="3">
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
@@ -26,8 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintLeft_toRightOf="@id/mapFrame"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_weight="1">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -43,7 +40,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="forwa" />
+            android:onClick="forwa"
+            android:text="↑" />
         <android.support.v4.widget.Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -58,18 +56,18 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/leftButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="←" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/rigthButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="→" />
         </LinearLayout>
 
         <LinearLayout
@@ -81,12 +79,13 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"/>
+
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/backwardButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="↓" />
             <android.support.v4.widget.Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -94,25 +93,25 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/runButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Run" />
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/stayButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Stay" />
 
         <Button
-            android:id="@+id/button8"
+            android:id="@+id/carefulButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Be careful" />
 
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
