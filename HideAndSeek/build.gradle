@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
         google()
         jcenter()
@@ -9,7 +9,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.google.gms:google-services:4.0.1' // Firebase
-        
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,6 +19,18 @@ allprojects {
     repositories {
         google()
         jcenter()
+    }
+    project.ext {
+        constants = [
+                path_start_activity : "/START_ACTIVITY",
+                path_acknowledge    : "/ACKNOWLEDGE",
+                example_path_asset  : "/ASSET",
+                example_path_text   : "/TEXT",
+                example_path_datamap: "/DATAMAP",
+                mainactivity        : "MainActivity",
+                a_key               : "a_value",
+                some_other_key      : "some_other_value",
+        ]
     }
 }
 

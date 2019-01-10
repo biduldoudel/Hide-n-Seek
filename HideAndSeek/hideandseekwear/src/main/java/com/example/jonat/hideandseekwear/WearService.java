@@ -1,4 +1,4 @@
-package com.example.jonat.hideandseek;
+package com.example.jonat.hideandseekwear;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -222,9 +221,10 @@ public class WearService extends WearableListenerService {
                 break;
             case BuildConfig.W_example_path_text:
                 Log.v(TAG, "Message contained text. Return a datamap for demo purpose");
-                Intent intent = new Intent("COMMAND");
-                intent.putExtra(data, "data");
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                Intent intent = new Intent();
+                intent.setAction("COMMAND");
+                intent.putExtra("data", data);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                 break;
             default:
                 Log.w(TAG, "Received a message for unknown path " + path + " : " + new String(messageEvent.getData()));
@@ -239,15 +239,12 @@ public class WearService extends WearableListenerService {
                     @Override
                     public void onSuccess(Integer integer) {
                         Log.v(TAG, "Sent message to " + nodeId + ". Result = " + integer);
-                        Toast.makeText(getApplicationContext(), "Message send succesful", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, "Message not sent. " + e.getMessage());
-                        Toast.makeText(getApplicationContext(), "Message send failed", Toast.LENGTH_SHORT).show();
-
                     }
                 });
     }

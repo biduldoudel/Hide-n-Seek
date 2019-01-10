@@ -51,7 +51,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                     + ".permission.ACCESS_COARSE_LOCATION", "android.permission.INTERNET"}, 0);
         }
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
 
         role = intent.getExtras().getString("role");
         team = intent.getExtras().getString("team");
@@ -71,6 +71,12 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                     command2.setText(command1.getText());
                     command = dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class);
                     command1.setText(command);
+
+                    Intent intentWear = new Intent(RunnerPlayer.this,WearService.class);
+                    intentWear.setAction(WearService.ACTION_SEND.MESSAGE.name());
+                    intentWear.putExtra(WearService.MESSAGE, command);
+                    intentWear.putExtra(WearService.PATH, BuildConfig.W_example_path_text);
+                    startService(intentWear);
                 }
             }
 
