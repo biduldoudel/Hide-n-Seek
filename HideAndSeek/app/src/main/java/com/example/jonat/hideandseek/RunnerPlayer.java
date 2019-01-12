@@ -42,6 +42,8 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runner_player);
 
+        sendWearStart();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission("android" + ""
                 + ".permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_DENIED ||
                 checkSelfPermission("android.permission.ACCESS_COARSE_LOCATION") ==
@@ -89,6 +91,13 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
 
     }
 
+    private void sendWearStart() {
+        Intent intent = new Intent(RunnerPlayer.this, WearService.class);
+        intent.setAction(WearService.ACTION_SEND.STARTACTIVITY.name());
+        intent.putExtra(WearService.ACTIVITY_TO_START, BuildConfig.W_mainactivity);
+        startService(intent);
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         gamesRef.child(gameId).child("players").child(username).child("longitude").setValue(location.getLongitude());
@@ -110,5 +119,17 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
 
     }
 
+    public double coordinatesDistance(double lat1, double long1, double lat2, double long2) {
+        double d;
+        lat1 = Math.toRadians(lat1);
+        long1 = Math.toRadians(long1);
+        lat2 = Math.toRadians(lat2);
+        long2 = Math.toRadians(long2);
+
+        double a = Math.pow(Math.sin((lat1 - lat2) / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((long1 - long2) / 2), 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        d = Math.abs(6371000 * c);
+        return d;
+    }
 
 }

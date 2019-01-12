@@ -83,12 +83,13 @@ public class RegisterNewGame extends AppCompatActivity {
         seekBarPlayerNumber = findViewById(R.id.seekBarPlayerNumber);
         textViewPlayerNumber = findViewById(R.id.textViewPlayerNumber);
 
+        textViewPlayerNumber.setText(Integer.toString(seekBarPlayerNumber.getProgress()+4));
         seekBarPlayerNumber.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Update the number of player with the seek bar
-                textViewPlayerNumber.setText(Integer.toString(progress));
+                textViewPlayerNumber.setText(Integer.toString(progress+2));
             }
 
             @Override

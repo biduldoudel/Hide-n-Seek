@@ -29,17 +29,20 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_places_api_key" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterNewPlayer" />
+        <activity android:name=".RegisterNewPlayer"
+            android:theme="@style/AppTheme.Dark"/>
         <activity android:name=".PlayerActivity" />
         <activity android:name=".JoinNewGame" />
-        <activity android:name=".RegisterNewGame" />
+        <activity android:name=".RegisterNewGame"
+            android:theme="@style/AppTheme.Dark"/>
         <activity
             android:name=".RulesRecall"
             android:screenOrientation="landscape"
@@ -48,7 +51,8 @@
             android:name=".MasterPlayer"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".RunnerPlayer" />
+        <activity android:name=".RunnerPlayer"
+            android:theme="@style/AppTheme.Dark"/>
 
         <service android:name=".WearService">
             <intent-filter>

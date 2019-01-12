@@ -1,7 +1,5 @@
 package com.example.jonat.hideandseek;
 
-import android.content.res.Resources;
-
 import java.io.Serializable;
 
 
@@ -19,6 +17,8 @@ public class Game implements Serializable {
     int nSurvivors;
     int nZombies;
     boolean gameReady;
+    boolean masterZombieRegistered;
+    boolean masterSurvivorRegistered;
 
 
     public Game(int playerNumber, String gameCode, int nExpectedPlayer) {
@@ -31,7 +31,17 @@ public class Game implements Serializable {
         this.nReadyPlayers = 0;
         this.nSurvivors=0;
         this.nZombies=0;
+        this.masterZombieRegistered = false;
+        this.masterSurvivorRegistered = false;
         //this.gameReady = false;
+    }
+
+    public boolean isMasterZombieRegistered() {
+        return masterZombieRegistered;
+    }
+
+    public boolean isMasterSurvivorRegistered() {
+        return masterSurvivorRegistered;
     }
 
     public String getGameId() {return this.gameId;}
@@ -47,6 +57,7 @@ public class Game implements Serializable {
     public int getnSurvivors() {return nSurvivors;}
 
     public int getnZombies() {return nZombies;}
+
 
     //public boolean getGameReady() {return gameReady;}
 }

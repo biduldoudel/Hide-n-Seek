@@ -3,6 +3,6 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/violet_wasteland"
+        android:font="@font/road_rage"
         />
 </font-family>

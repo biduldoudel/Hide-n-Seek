@@ -1,4 +1,4 @@
-package com.example.jonat.hideandseekwear;
+package com.example.jonat.hideandseek;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.wearable.activity.WearableActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.jonat.hideandseek.R;
 
 public class MainActivity extends WearableActivity {
 
@@ -33,6 +35,7 @@ public class MainActivity extends WearableActivity {
             public void onReceive(Context context, Intent intent) {
 
                 String command = intent.getStringExtra("data");
+                command2.setText(command1.getText());
                 command1.setText(command);
 
             }

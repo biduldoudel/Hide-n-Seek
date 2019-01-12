@@ -4,17 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterNewPlayer">
+    tools:context=".RegisterNewPlayer"
+    android:background="@drawable/background_light_fill">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,22 +19,22 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="0.5"/>
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
             android:text="Enter the Game Code (6 digits)"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/editTextCodeNumber"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center_horizontal"
             android:inputType="numberSigned"
@@ -47,78 +42,110 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="0.2" />
 
         <TextView
             android:id="@+id/textViewUsername"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Username"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editTextUsername"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center_horizontal"
             android:inputType="textPersonName"
-            android:textSize="24sp" />
-
-        <LinearLayout
+            android:textSize="18sp" />
+        <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.2" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2" />
 
             <Switch
                 android:id="@+id/switchTeam"
-                android:layout_width="235dp"
-                android:layout_height="67dp"
-                android:text="Team" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Team"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:fontFamily="@font/bloodpaint"
+                android:textColor="@android:color/black"/>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2" />
 
             <TextView
                 android:id="@+id/TextViewTeam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Zombie" />
+                android:gravity="center_vertical"
+                android:text="Zombie"
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2" />
 
             <Switch
                 android:id="@+id/switchRole"
-                android:layout_width="235dp"
-                android:layout_height="72dp"
-                android:text="Role" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Role"
+                android:textSize="18sp"
+                android:fontFamily="@font/bloodpaint"
+                android:textColor="@android:color/black"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2" />
 
             <TextView
                 android:id="@+id/TextViewRole"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Runner" />
+                android:gravity="center_vertical"
+                android:text="Runner"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="0.2" />
 
         <Button
             android:id="@+id/buttonReady"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Join Game" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Join Game"
+            android:textSize="18sp" />
 
 
     </LinearLayout>

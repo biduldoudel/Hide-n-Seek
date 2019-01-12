@@ -1,6 +1,7 @@
 package com.example.jonat.hideandseek;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +42,10 @@ public class RegisterNewPlayer extends AppCompatActivity {
     private boolean playerRegistered;
     private int nExpectedPlayers;
     private ValueEventListener valueListener;
+    private boolean masterZombieRegistered;
+    private boolean masterSurvivorRegistered;
+    private int nZombies;
+    private int nSurvivors;
 
 
     @Override
@@ -67,7 +72,7 @@ public class RegisterNewPlayer extends AppCompatActivity {
             buttonJoin.setVisibility(View.INVISIBLE);
 */
             TextView textButton = findViewById(R.id.textView);
-            textButton.setText("Please share this number with the players !");
+            textButton.setText("Please share this number with the other players !");
             Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
 
             //getGameData();
@@ -125,7 +130,8 @@ public class RegisterNewPlayer extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gamesRef.removeEventListener(valueListener);
+        if(valueListener != null)
+            gamesRef.removeEventListener(valueListener);
     }
 
     private void updateDatabase() {
@@ -144,40 +150,54 @@ public class RegisterNewPlayer extends AppCompatActivity {
                     if (gameCodeDB.equals(gameCode) /*&& gameStatusDB.equals("Waiting")*/) {
                         gameId = game.getKey();
 
-                        buttonReady.setEnabled(false);
-                        buttonReady.setText("Waiting for players");
-                        editTextCodeNumber.setEnabled(false);
+
 
                         //Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
                         foundGame = true;
 
                         nReadyPlayers = dataSnapshot.child(gameId).child("nReadyPlayers").getValue(Integer.class);
                         nExpectedPlayers = dataSnapshot.child(gameId).child("nExpectedPlayers").getValue(Integer.class);
+                        nZombies =dataSnapshot.child(gameId).child("nZombies").getValue(Integer.class);;
+                        nSurvivors=dataSnapshot.child(gameId).child("nSurvivors").getValue(Integer.class);;
+                        masterSurvivorRegistered = dataSnapshot.child(gameId).child("masterSurvivorRegistered").getValue(Boolean.class);
+                        masterZombieRegistered = dataSnapshot.child(gameId).child("masterZombieRegistered").getValue(Boolean.class);
+
 
                         if (!playerRegistered && gameStatusDB.equals("WaitingForPlayers")) {
                             if (nReadyPlayers >= nExpectedPlayers) {
                                 Toast.makeText(getApplicationContext(), "This game seems to be full", Toast.LENGTH_LONG).show();
                             } else {
-                                addPlayerToFirebaseDB();
-                                nReadyPlayers++;
-                                gamesRef.child(gameId).child("nReadyPlayers").setValue(nReadyPlayers);
-                                playerRegistered = true;
-                                if (nReadyPlayers == nExpectedPlayers) {
-                                    gamesRef.child(gameId).child("gameStatus").setValue("RulesRecall");
-                                    gameStatusDB = "RulesRecall";
+                                if ((nExpectedPlayers - nReadyPlayers) == 2 && !masterSurvivorRegistered && !masterZombieRegistered && !role.equals("Master")) {
+                                    Toast.makeText(getApplicationContext(), "You need to chose a master role", Toast.LENGTH_LONG).show();
+                                } else if ((nExpectedPlayers - nReadyPlayers) == 1 && !masterSurvivorRegistered && (!role.equals("Master") || !team.equals("Survivor"))) {
+                                    Toast.makeText(getApplicationContext(), "You need to chose the survivor master role", Toast.LENGTH_LONG).show();
+                                } else if ((nExpectedPlayers - nReadyPlayers) == 1 && !masterZombieRegistered && (!role.equals("Master") || !team.equals("Zombie"))) {
+                                    Toast.makeText(getApplicationContext(), "You need to chose the zombie master role", Toast.LENGTH_LONG).show();
+                                } else {
+                                    addPlayerToFirebaseDB();
+                                    nReadyPlayers++;
+                                    gamesRef.child(gameId).child("nReadyPlayers").setValue(nReadyPlayers);
+                                    playerRegistered = true;
+                                    buttonReady.setEnabled(false);
+                                    buttonReady.setText("Waiting for players");
+                                    editTextCodeNumber.setEnabled(false);
+                                    if (nReadyPlayers == nExpectedPlayers) {
+                                        gamesRef.child(gameId).child("gameStatus").setValue("RulesRecall");
+                                        gameStatusDB = "RulesRecall";
+                                    }
                                 }
                             }
                         }
 
                         if (playerRegistered && gameStatusDB.equals("RulesRecall")) {
-                                // Go to the player activity
-                                gamesRef.child(gameId).child("nReadyPlayers").setValue(0);
-                                Intent intent = new Intent(RegisterNewPlayer.this, RulesRecall.class);
-                                intent.putExtra("role", role);
-                                intent.putExtra("team",team);
-                                intent.putExtra("gameId",gameId);
-                                intent.putExtra("username",username);
-                                startActivity(intent);
+                            // Go to the player activity
+                            gamesRef.child(gameId).child("nReadyPlayers").setValue(0);
+                            Intent intent = new Intent(RegisterNewPlayer.this, RulesRecall.class);
+                            intent.putExtra("role", role);
+                            intent.putExtra("team", team);
+                            intent.putExtra("gameId", gameId);
+                            intent.putExtra("username", username);
+                            startActivity(intent);
                         }
                         break;
                     }
@@ -224,7 +244,25 @@ public class RegisterNewPlayer extends AppCompatActivity {
     private void addPlayerToFirebaseDB() {
         Player player = new Player(username, team, role);
         gamesRef.child(gameId).child("players").child(username).setValue(player);
+        if (role.equals("Master")) {
+            switch (team) {
+                case "Zombie":
+                    gamesRef.child(gameId).child("masterZombieRegistered").setValue(true);
+                    break;
+                case "Survivor":
+                    gamesRef.child(gameId).child("masterSurvivorRegistered").setValue(true);
+                    break;
+            }
+        } else if (role.equals("Runner")) {
+            switch (team) {
+                case "Zombie":
+                    gamesRef.child(gameId).child("nZombies").setValue(nZombies + 1);
+                    break;
+                case "Survivor":
+                    gamesRef.child(gameId).child("nSurvivors").setValue(nSurvivors + 1);
+            }
+
+        }
+
     }
-
-
 }

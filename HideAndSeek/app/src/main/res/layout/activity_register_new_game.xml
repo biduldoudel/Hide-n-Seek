@@ -4,17 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_light_fill"
     tools:context=".JoinNewGame">
 
     <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,15 +18,17 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="133dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Number of player in total (including you) :"
             android:textSize="18sp" />
+
 
         <TextView
             android:id="@+id/textViewPlayerNumber"
@@ -45,14 +42,16 @@
             android:id="@+id/seekBarPlayerNumber"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
-            android:layout_height="115dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:max="20"
-            android:progress="1" />
+            android:progress="0" />
 
         <Button
             android:id="@+id/buttonNewGame"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="New Game !" />
 
     </LinearLayout>
