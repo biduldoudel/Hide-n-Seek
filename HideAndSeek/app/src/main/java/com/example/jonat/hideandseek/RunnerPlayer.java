@@ -3,6 +3,7 @@ package com.example.jonat.hideandseek;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class RunnerPlayer extends AppCompatActivity implements LocationListener {
 
     private static final FirebaseDatabase databaseGame = FirebaseDatabase.getInstance();
@@ -37,6 +41,8 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
     private TextView command1;
     private TextView command2;
     private ValueEventListener valueListener;
+    private int onTargetKey;
+    private Date prevDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +86,17 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                     intentWear.putExtra(WearService.MESSAGE, command);
                     intentWear.putExtra(WearService.PATH, BuildConfig.W_example_path_text);
                     startService(intentWear);
+                }
+
+                for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()) {
+                    double targetLatitude = target.child("latitude").getValue(Double.class);
+                    double targetLongitude = target.child("longitude").getValue(Double.class);
+                    if (coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25 && onTargetKey == Integer.parseInt(target.getKey())) {
+                        Date currentDate =Calendar.getInstance().getTime();
+                        long dt = currentDate.getTime() - prevDate.getTime();
+                        gamesRef.child(gameId).child("survivorsScore").setValue(dataSnapshot.child(gameId).child("survivorsScore").getValue(Integer.class)+dt/1000);
+                        prevDate = currentDate;
+                    }
                 }
             }
 

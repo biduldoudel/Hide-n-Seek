@@ -19,6 +19,7 @@ public class Game implements Serializable {
     boolean gameReady;
     boolean masterZombieRegistered;
     boolean masterSurvivorRegistered;
+    int survivorsScore = 0;
 
 
     public Game(int playerNumber, String gameCode, int nExpectedPlayer) {
@@ -58,6 +59,8 @@ public class Game implements Serializable {
 
     public int getnZombies() {return nZombies;}
 
-
+    public int getSurvivorsScore() {
+        return survivorsScore;
+    }
     //public boolean getGameReady() {return gameReady;}
 }

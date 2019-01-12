@@ -59,6 +59,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
     private String command;
     private boolean mapInitialized = false;
     Circle gameZone;
+    private String selectedPlayerTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +73,10 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                 ".permission.INTERNET") == PackageManager.PERMISSION_DENIED)) {
             requestPermissions(new String[]{"android.permission.ACCESS_FINE_LOCATION", "android"
                     + ".permission.ACCESS_COARSE_LOCATION", "android.permission.INTERNET"}, 0);
+        } else {
+            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         }
-
         Intent intent = getIntent();
 
         role = intent.getExtras().getString("role");
@@ -86,8 +89,6 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
         gamesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,7 +122,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                                 builder.include(new LatLng(mediumLat - 0.0035973, mediumLong));
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 5));
 
-                                if (team.equals("Survivor"))
+                                if (team.equals("Survivor")) {
                                     for (int i = 1; i <= dataSnapshot.child(gameId).child("nSurvivors").getValue(Integer.class); i++) {
 
                                         double randomLat = mediumLat + ThreadLocalRandom.current().nextDouble(-0.0033725, 0.00337251);
@@ -137,7 +138,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                                         gamesRef.child(gameId).child("targets").child(Integer.toString(i)).child("latitude").setValue(randomLat);
                                         gamesRef.child(gameId).child("targets").child(Integer.toString(i)).child("longitude").setValue(randomLong);
                                     }
-                                mapInitialized = true;
+                                    mapInitialized = true;
+                                }
                             }
                         }
                     }
@@ -149,9 +151,18 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                         double latitude = player.child("latitude").getValue(Double.class);
                         double longitude = player.child("longitude").getValue(Double.class);
                         LatLng playerPosition = new LatLng(latitude, longitude);
+
                         markers.add(mMap.addMarker(new MarkerOptions().position(playerPosition).title(username).anchor(0.5f, 0.5f)));
                         markers.get(markers.size() - 1).setTag(username);
                         markers.get(markers.size() - 1).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.survivor_icon_small));
+                        switch (player.child("team").getValue(String.class)) {
+                            case "Survivor":
+                                markers.get(markers.size() - 1).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.survivor_icon_small));
+                                break;
+                            case "Zombie":
+                                markers.get(markers.size() - 1).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.zombie_icon_small));
+                                break;
+                        }
                     }
                     marekersInitialized = true;
                 } else
@@ -167,15 +178,22 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                                 break;
                             }
                         }
-
-                        for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()){
-                            double targetLatitude = target.child("latitude").getValue(Double.class);
-                            double targetLongitude = target.child("longitude").getValue(Double.class);
-                            if(coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25){
-                                circles.get(Integer.parseInt(target.getKey())-1).setStrokeColor(Color.RED);
+                        if (player.child("team").getValue(String.class).equals("Survivor") && mapInitialized && team.equals("Survivor")) {
+                            for (Circle circle : circles) {
+                                circle.setStrokeColor(Color.BLUE);
+                            }
+                            for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()) {
+                                double targetLatitude = target.child("latitude").getValue(Double.class);
+                                double targetLongitude = target.child("longitude").getValue(Double.class);
+                                if (coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25) {
+                                    circles.get(Integer.parseInt(target.getKey()) - 1).setStrokeColor(Color.RED);
+                                }
                             }
                         }
                     }
+                if (selectedPlayer != null) {
+                    selectedPlayerTeam = dataSnapshot.child(gameId).child("players").child(selectedPlayer).child("team").getValue(String.class);
+                }
             }
 
             @Override
@@ -189,8 +207,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 command += "forward";
 
-                if (selectedPlayer!=null)
-                playersRef.child(selectedPlayer).child("command").setValue(command);
+                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                    playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
 
@@ -199,8 +217,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "left";
-                if (selectedPlayer!=null)
-                playersRef.child(selectedPlayer).child("command").setValue(command);
+                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                    playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
 
@@ -209,9 +227,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "right";
-
-                if (selectedPlayer!=null)
-                playersRef.child(selectedPlayer).child("command").setValue(command);
+                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                    playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
 
@@ -220,9 +237,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "back";
-
-                if (selectedPlayer!=null)
-                playersRef.child(selectedPlayer).child("command").setValue(command);
+                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                    playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
 
@@ -241,8 +257,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 
-                if (selectedPlayer!=null)
-                playersRef.child(selectedPlayer).child("command").setValue("Stay there");
+                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                    playersRef.child(selectedPlayer).child("command").setValue("Stay there");
             }
         });
 
@@ -250,8 +266,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         findViewById(R.id.carefulButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedPlayer!=null)
-                playersRef.child(selectedPlayer).child("command").setValue("Be careful!");
+                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                    playersRef.child(selectedPlayer).child("command").setValue("Be careful!");
             }
         });
     }
@@ -270,13 +286,6 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         longitude = location.getLongitude();
         latitude = location.getLatitude();
         LatLng currentLocation = new LatLng(latitude, longitude);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        //mMap.addMarker(new MarkerOptions().position(currentLocation).title("test"));
-        //mMap.addCircle(new CircleOptions().center(currentLocation).radius(1000));
-        longitude = 6.931933;
-        latitude = 46.992979;
-        LatLng currentLocation2 = new LatLng(latitude, longitude);
-        //mMap.addMarker(new MarkerOptions().position(currentLocation2).title("test"));
         gamesRef.child(gameId).child("players").child(username).child("longitude").setValue(location.getLongitude());
         gamesRef.child(gameId).child("players").child(username).child("latitude").setValue(location.getLatitude());
     }
@@ -300,6 +309,16 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMarkerClick(Marker marker) {
         selectedPlayer = marker.getTag().toString();
         return false;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        }
     }
 
     public double coordinatesDistance(double lat1, double long1, double lat2, double long2) {
