@@ -67,7 +67,7 @@ public class RegisterNewGame extends AppCompatActivity {
     private void addGameToFirebaseDB() {
 
 
-        Game game = new Game(4, gameCode, seekBarPlayerNumber.getProgress());
+        Game game = new Game(4, gameCode, seekBarPlayerNumber.getProgress()+2);
         gamesRef.setValue(game);
     }
 

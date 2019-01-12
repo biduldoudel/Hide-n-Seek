@@ -121,7 +121,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                                 builder.include(new LatLng(mediumLat - 0.0035973, mediumLong));
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 5));
 
-                                if (player.child("team").getValue(String.class).equals("Survivor"))
+                                if (team.equals("Survivor"))
                                     for (int i = 1; i <= dataSnapshot.child(gameId).child("nSurvivors").getValue(Integer.class); i++) {
 
                                         double randomLat = mediumLat + ThreadLocalRandom.current().nextDouble(-0.0033725, 0.00337251);
@@ -188,6 +188,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "forward";
+
+                if (selectedPlayer!=null)
                 playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -197,6 +199,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "left";
+                if (selectedPlayer!=null)
                 playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -206,6 +209,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "right";
+
+                if (selectedPlayer!=null)
                 playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -215,6 +220,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "back";
+
+                if (selectedPlayer!=null)
                 playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -233,6 +240,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         findViewById(R.id.stayButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (selectedPlayer!=null)
                 playersRef.child(selectedPlayer).child("command").setValue("Stay there");
             }
         });
@@ -241,6 +250,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         findViewById(R.id.carefulButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (selectedPlayer!=null)
                 playersRef.child(selectedPlayer).child("command").setValue("Be careful!");
             }
         });

@@ -36,6 +36,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
     private String command;
     private TextView command1;
     private TextView command2;
+    private ValueEventListener valueListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,10 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                 ".permission.INTERNET") == PackageManager.PERMISSION_DENIED)) {
             requestPermissions(new String[]{"android.permission.ACCESS_FINE_LOCATION", "android"
                     + ".permission.ACCESS_COARSE_LOCATION", "android.permission.INTERNET"}, 0);
+        } else {
+            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         }
-
         final Intent intent = getIntent();
 
         role = intent.getExtras().getString("role");
@@ -63,8 +66,6 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
         command1 = findViewById(R.id.command1);
         command2 = findViewById(R.id.command2);
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
         gamesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,7 +75,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                     command = dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class);
                     command1.setText(command);
 
-                    Intent intentWear = new Intent(RunnerPlayer.this,WearService.class);
+                    Intent intentWear = new Intent(RunnerPlayer.this, WearService.class);
                     intentWear.setAction(WearService.ACTION_SEND.MESSAGE.name());
                     intentWear.putExtra(WearService.MESSAGE, command);
                     intentWear.putExtra(WearService.PATH, BuildConfig.W_example_path_text);
@@ -88,7 +89,16 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
             }
         });
 
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        }
     }
 
     private void sendWearStart() {
