@@ -91,12 +91,18 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                 for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()) {
                     double targetLatitude = target.child("latitude").getValue(Double.class);
                     double targetLongitude = target.child("longitude").getValue(Double.class);
-                    if (coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25 && onTargetKey == Integer.parseInt(target.getKey())) {
+                    if(coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) > 25 && onTargetKey == Integer.parseInt(target.getKey())){
+                        onTargetKey = 0;
+                    }else if (coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25 && onTargetKey == Integer.parseInt(target.getKey())) {
                         Date currentDate =Calendar.getInstance().getTime();
                         long dt = currentDate.getTime() - prevDate.getTime();
                         gamesRef.child(gameId).child("survivorsScore").setValue(dataSnapshot.child(gameId).child("survivorsScore").getValue(Integer.class)+dt/1000);
                         prevDate = currentDate;
+                    } else if(coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25 && onTargetKey != Integer.parseInt(target.getKey())){
+                        onTargetKey = Integer.parseInt(target.getKey());
+                        prevDate = Calendar.getInstance().getTime();
                     }
+
                 }
             }
 

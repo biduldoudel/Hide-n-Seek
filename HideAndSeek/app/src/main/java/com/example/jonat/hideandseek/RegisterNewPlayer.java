@@ -167,13 +167,13 @@ public class RegisterNewPlayer extends AppCompatActivity {
                             if (nReadyPlayers >= nExpectedPlayers) {
                                 Toast.makeText(getApplicationContext(), "This game seems to be full", Toast.LENGTH_LONG).show();
                             } else {
-                              /*  if ((nExpectedPlayers - nReadyPlayers) == 2 && !masterSurvivorRegistered && !masterZombieRegistered && !role.equals("Master")) {
+                                if ((nExpectedPlayers - nReadyPlayers) == 2 && !masterSurvivorRegistered && !masterZombieRegistered && !role.equals("Master")) {
                                     Toast.makeText(getApplicationContext(), "You need to chose a master role", Toast.LENGTH_LONG).show();
                                 } else if ((nExpectedPlayers - nReadyPlayers) == 1 && !masterSurvivorRegistered && (!role.equals("Master") || !team.equals("Survivor"))) {
                                     Toast.makeText(getApplicationContext(), "You need to chose the survivor master role", Toast.LENGTH_LONG).show();
                                 } else if ((nExpectedPlayers - nReadyPlayers) == 1 && !masterZombieRegistered && (!role.equals("Master") || !team.equals("Zombie"))) {
                                     Toast.makeText(getApplicationContext(), "You need to chose the zombie master role", Toast.LENGTH_LONG).show();
-                                } else {*/
+                                } else {
                                     addPlayerToFirebaseDB();
                                     nReadyPlayers++;
                                     gamesRef.child(gameId).child("nReadyPlayers").setValue(nReadyPlayers);
@@ -184,7 +184,7 @@ public class RegisterNewPlayer extends AppCompatActivity {
                                     if (nReadyPlayers == nExpectedPlayers) {
                                         gamesRef.child(gameId).child("gameStatus").setValue("RulesRecall");
                                         gameStatusDB = "RulesRecall";
-
+                                    }
                                 }
                             }
                         }
