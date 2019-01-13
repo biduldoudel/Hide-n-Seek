@@ -54,7 +54,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
     private String gameId;
     private String username;
     private boolean mapReady = false;
-    private String selectedPlayer;
+    private String selectedPlayer="";
     private Button forwardButton;
     private String command;
     private boolean mapInitialized = false;
@@ -138,6 +138,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                                         gamesRef.child(gameId).child("targets").child(Integer.toString(i)).child("latitude").setValue(randomLat);
                                         gamesRef.child(gameId).child("targets").child(Integer.toString(i)).child("longitude").setValue(randomLong);
                                     }
+                                    gamesRef.child(gameId).child("gameStatus").setValue("InProgress");
                                     mapInitialized = true;
                                 }
                             }
@@ -191,7 +192,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         }
                     }
-                if (selectedPlayer != null) {
+                if (!selectedPlayer.equals("")) {
                     selectedPlayerTeam = dataSnapshot.child(gameId).child("players").child(selectedPlayer).child("team").getValue(String.class);
                 }
             }
@@ -207,7 +208,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 command += "forward";
 
-                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                if (!selectedPlayer.equals("") && selectedPlayerTeam.equals(team))
                     playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -217,7 +218,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "left";
-                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                if (!selectedPlayer.equals("")&& selectedPlayerTeam.equals(team))
                     playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -227,7 +228,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "right";
-                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                if (!selectedPlayer.equals("") && selectedPlayerTeam.equals(team))
                     playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -237,7 +238,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 command += "back";
-                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                if (!selectedPlayer.equals("") && selectedPlayerTeam.equals(team))
                     playersRef.child(selectedPlayer).child("command").setValue(command);
             }
         });
@@ -257,7 +258,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 
-                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                if (!selectedPlayer.equals("") && selectedPlayerTeam.equals(team))
                     playersRef.child(selectedPlayer).child("command").setValue("Stay there");
             }
         });
@@ -266,7 +267,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         findViewById(R.id.carefulButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedPlayer != null && selectedPlayerTeam.equals(team))
+                if (!selectedPlayer.equals("") && selectedPlayerTeam.equals(team))
                     playersRef.child(selectedPlayer).child("command").setValue("Be careful!");
             }
         });

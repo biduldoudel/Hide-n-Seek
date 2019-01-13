@@ -43,13 +43,14 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
     private ValueEventListener valueListener;
     private int onTargetKey;
     private Date prevDate;
+    private Double score = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runner_player);
 
-        sendWearStart();
+        //sendWearStart();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission("android" + ""
                 + ".permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_DENIED ||
@@ -80,28 +81,34 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                     command2.setText(command1.getText());
                     command = dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class);
                     command1.setText(command);
-
+/*
                     Intent intentWear = new Intent(RunnerPlayer.this, WearService.class);
                     intentWear.setAction(WearService.ACTION_SEND.MESSAGE.name());
                     intentWear.putExtra(WearService.MESSAGE, command);
                     intentWear.putExtra(WearService.PATH, BuildConfig.W_example_path_text);
-                    startService(intentWear);
+                    startService(intentWear);*/
                 }
 
-                for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()) {
-                    double targetLatitude = target.child("latitude").getValue(Double.class);
-                    double targetLongitude = target.child("longitude").getValue(Double.class);
-                    if(coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) > 25 && onTargetKey == Integer.parseInt(target.getKey())){
-                        onTargetKey = 0;
-                    }else if (coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25 && onTargetKey == Integer.parseInt(target.getKey())) {
-                        Date currentDate =Calendar.getInstance().getTime();
-                        long dt = currentDate.getTime() - prevDate.getTime();
-                        gamesRef.child(gameId).child("survivorsScore").setValue(dataSnapshot.child(gameId).child("survivorsScore").getValue(Integer.class)+dt/1000);
-                        prevDate = currentDate;
-                    } else if(coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude) < 25 && onTargetKey != Integer.parseInt(target.getKey())){
-                        onTargetKey = Integer.parseInt(target.getKey());
-                        prevDate = Calendar.getInstance().getTime();
+                if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("InProgress") && team.equals("Survivor")){
+                    for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()) {
+                        double targetLatitude = target.child("latitude").getValue(Double.class);
+                        double targetLongitude = target.child("longitude").getValue(Double.class);
+                        double d = coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude);
+                        if (d > 25 && onTargetKey == Integer.parseInt(target.getKey())) {
+                            onTargetKey = 0;
+                        } else if (d < 25 && onTargetKey == Integer.parseInt(target.getKey())) {
+                            Date currentDate = Calendar.getInstance().getTime();
+                            long dt = currentDate.getTime() - prevDate.getTime();
+                            score = score + dt/1000.0;
+                            gamesRef.child(gameId).child("survivorsScore").setValue(score);
+                            prevDate = currentDate;
+                        } else if (d < 25 && onTargetKey != Integer.parseInt(target.getKey())) {
+                            onTargetKey = Integer.parseInt(target.getKey());
+                            prevDate = Calendar.getInstance().getTime();
+                        }
+
                     }
+                } else if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("InProgress") && team.equals("Zombie")){
 
                 }
             }
@@ -133,6 +140,8 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(Location location) {
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
         gamesRef.child(gameId).child("players").child(username).child("longitude").setValue(location.getLongitude());
         gamesRef.child(gameId).child("players").child(username).child("latitude").setValue(location.getLatitude());
     }

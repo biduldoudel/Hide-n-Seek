@@ -119,9 +119,11 @@ public class RulesRecall extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nReadyPlayer = dataSnapshot.child(gameId).child("nReadyPlayers").getValue(Integer.class);
-                if (dataSnapshot.child(gameId).child("nExpectedPlayers").getValue(Integer.class) == nReadyPlayer
-                        || dataSnapshot.child(gameId).child("gameStatus").getValue(String.class) == "InProgress") {
-                    gamesRef.child(gameId).child("gameStatus").setValue("InProgress");
+                if (dataSnapshot.child(gameId).child("nExpectedPlayers").getValue(Integer.class) == nReadyPlayer) {
+                    if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("RulesRecall")) {
+                        gamesRef.child(gameId).child("gameStatus").setValue("GameSetup");
+                    }
+
                     Intent intent;
                     switch (role) {
                         case "Master":
@@ -146,13 +148,13 @@ public class RulesRecall extends AppCompatActivity {
             }
 
 
-        @Override
-        public void onCancelled (@NonNull DatabaseError databaseError){
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        }
-    });
+            }
+        });
 
-}
+    }
 
     @Override
     protected void onPause() {
