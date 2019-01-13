@@ -75,7 +75,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                     + ".permission.ACCESS_COARSE_LOCATION", "android.permission.INTERNET"}, 0);
         } else {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
         Intent intent = getIntent();
 
@@ -286,9 +286,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         //mMap.clear();
         longitude = location.getLongitude();
         latitude = location.getLatitude();
-        LatLng currentLocation = new LatLng(latitude, longitude);
-        gamesRef.child(gameId).child("players").child(username).child("longitude").setValue(location.getLongitude());
-        gamesRef.child(gameId).child("players").child(username).child("latitude").setValue(location.getLatitude());
+        gamesRef.child(gameId).child("players").child(username).child("longitude").setValue(longitude);
+        gamesRef.child(gameId).child("players").child(username).child("latitude").setValue(latitude);
     }
 
     @Override
@@ -318,7 +317,7 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
     }
 

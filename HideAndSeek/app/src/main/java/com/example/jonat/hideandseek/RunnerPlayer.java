@@ -61,7 +61,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                     + ".permission.ACCESS_COARSE_LOCATION", "android.permission.INTERNET"}, 0);
         } else {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
         final Intent intent = getIntent();
 
@@ -127,7 +127,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
 
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
     }
 

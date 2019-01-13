@@ -118,8 +118,10 @@ public class RulesRecall extends AppCompatActivity {
         gamesRef.addValueEventListener(valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 nReadyPlayer = dataSnapshot.child(gameId).child("nReadyPlayers").getValue(Integer.class);
                 if (dataSnapshot.child(gameId).child("nExpectedPlayers").getValue(Integer.class) == nReadyPlayer) {
+
                     if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("RulesRecall")) {
                         gamesRef.child(gameId).child("gameStatus").setValue("GameSetup");
                     }
