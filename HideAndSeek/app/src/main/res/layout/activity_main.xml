@@ -16,7 +16,7 @@
             android:id="@+id/spaceLeft"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3" />
+            android:layout_weight="0.1" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -37,14 +37,19 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/survivor_icon" />
 
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1" />
+
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/zombie_icon" />
@@ -58,21 +63,21 @@
             <Button
                 android:id="@+id/NewGameButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-
-                android:text="New Game  !" />
-
-            <Space
-                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="1"
+                android:background="@drawable/text_background_scratch1_fill"
+
+                android:text="New Game!" />
+
 
             <Button
                 android:id="@+id/JoinGameButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Join Game !"
+                android:layout_height="0dp"
+                android:text="Join Game!"
+                android:layout_weight="1"
+                android:background="@drawable/text_background_scratch1_fill"
+
                 />
 
             <Space
@@ -85,7 +90,7 @@
             android:id="@+id/spaceRight"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3" />
+            android:layout_weight="0.1" />
     </LinearLayout>
 
 

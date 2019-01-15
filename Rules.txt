@@ -1,0 +1,13 @@
+The rules are pretty simple. Two teams are formed : the zombies and the survivors. Each team is composed of one and only one master, and runners (all the non-master players). The goal of the zombies is to kill all the survivors an the goal of the survivors to collect ressources to be able to survive for a while longer.
+
+Survivors:
+
+Master: The overseer stays at the survivor HQ. Thanks to the leftover pre-apocalyptic technologies, he has a map that allows him to track both his runners and the zombies. Additionnaly he can see targeted areas on the map where the runners need to stay for as long as possible to score points. He can send commands to his runner by tapping on their icon on the map and then using the command buttons (!A "go" command must always be followed by a direction or nothing will be sent!)
+
+Runners: As previously stated, the runners need to collect resources. In order to do that, they 	need to stay in defined areas. The trick is that they don't know the location of thes targets, 	only the overseer can see them. For each second a runner stays in a target, he gets one point. 	Multiple runners can get points at the same time from the same targets: the more you are, the faster you collect, but you become easy targets for the zombies. 
+
+Zombies:
+
+Master: The psychic is a special
+
+Runners:    

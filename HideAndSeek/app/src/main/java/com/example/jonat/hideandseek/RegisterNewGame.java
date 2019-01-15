@@ -27,7 +27,7 @@ public class RegisterNewGame extends AppCompatActivity {
 
     private static final FirebaseDatabase databaseGame = FirebaseDatabase.getInstance();
     private static final DatabaseReference gamesGetRef = databaseGame.getReference("games");
-    private static final DatabaseReference gamesRef = gamesGetRef.push();
+    private static DatabaseReference gamesRef = null;
 
     private static final DatabaseReference gameNumbersField = databaseGame.getReference("gameNumbers");
     private static final int REGISTER_PROFILE = 1;
@@ -36,6 +36,7 @@ public class RegisterNewGame extends AppCompatActivity {
     String gameCode;
     SeekBar seekBarPlayerNumber;
     TextView textViewPlayerNumber;
+    private ValueEventListener valueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +47,49 @@ public class RegisterNewGame extends AppCompatActivity {
         displaySeekBar();
 
 
+        gamesGetRef.addValueEventListener(valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (gamesRef != null) {
+                    boolean gameCodeFound;
+                    do {
+                        gameCodeFound = true;
+                        gameCode = getGameCode();
+                        for (DataSnapshot game : dataSnapshot.getChildren()) {
+                            String s = game.child("gameCode").getValue(String.class);
+                                if (s.equals(gameCode))
+                                    gameCodeFound = false;
+                        }
+                    } while (!gameCodeFound);
+                    gamesGetRef.removeEventListener(valueEventListener);
+                    gamesRef.child("gameCode").setValue(gameCode);
+
+                    Intent intent = new Intent(RegisterNewGame.this, RegisterNewPlayer.class);
+                    intent.putExtra("gameCode", gameCode);
+                    intent.putExtra("registerNewGame", true);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         Button buttonNewGame = findViewById(R.id.buttonNewGame);
         buttonNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameCode=getGameCode();
-                addGameToFirebaseDB();
-                Intent intent = new Intent(RegisterNewGame.this, RegisterNewPlayer.class);
+                //gameCode=getGameCode();
+                //addGameToFirebaseDB();
+               /* Intent intent = new Intent(RegisterNewGame.this, RegisterNewPlayer.class);
                 intent.putExtra("gameCode", gameCode);
                 intent.putExtra("registerNewGame", true);
-                startActivity(intent);
+                startActivity(intent);*/
+                if (gamesRef == null) {
+                    addGameToFirebaseDB();
+                }
             }
 
         });
@@ -65,16 +99,18 @@ public class RegisterNewGame extends AppCompatActivity {
 
 
     private void addGameToFirebaseDB() {
-
-
-        Game game = new Game(4, gameCode, seekBarPlayerNumber.getProgress()+2);
+        gamesRef = gamesGetRef.push();
+        Game game = new Game(4, "", seekBarPlayerNumber.getProgress() + 2);
         gamesRef.setValue(game);
     }
 
 
     private String getGameCode() {
         Random rand = new Random();
-        int randNumber = rand.nextInt(999999);
+        int randNumber;
+        do {
+            randNumber = rand.nextInt(999999);
+        } while (String.valueOf(randNumber).length() != 6);
         return Integer.toString(randNumber);
     }
 
@@ -83,13 +119,13 @@ public class RegisterNewGame extends AppCompatActivity {
         seekBarPlayerNumber = findViewById(R.id.seekBarPlayerNumber);
         textViewPlayerNumber = findViewById(R.id.textViewPlayerNumber);
 
-        textViewPlayerNumber.setText(Integer.toString(seekBarPlayerNumber.getProgress()+4));
+        textViewPlayerNumber.setText(Integer.toString(seekBarPlayerNumber.getProgress() + 4));
         seekBarPlayerNumber.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Update the number of player with the seek bar
-                textViewPlayerNumber.setText(Integer.toString(progress+2));
+                textViewPlayerNumber.setText(Integer.toString(progress + 2));
             }
 
             @Override

@@ -121,7 +121,7 @@ public class RulesRecall extends AppCompatActivity {
 
                 nReadyPlayer = dataSnapshot.child(gameId).child("nReadyPlayers").getValue(Integer.class);
                 if (dataSnapshot.child(gameId).child("nExpectedPlayers").getValue(Integer.class) == nReadyPlayer) {
-
+                gamesRef.removeEventListener(valueEventListener);
                     if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("RulesRecall")) {
                         gamesRef.child(gameId).child("gameStatus").setValue("GameSetup");
                     }

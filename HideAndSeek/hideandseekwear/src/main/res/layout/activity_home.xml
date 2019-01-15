@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/survivor_icon_fill">
+        android:background="@drawable/survivor_zombie_icon_fill">
 
 
     </LinearLayout>

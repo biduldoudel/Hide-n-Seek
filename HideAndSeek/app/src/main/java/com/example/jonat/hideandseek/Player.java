@@ -13,6 +13,8 @@ public class Player implements Serializable {
     private double longitude;
     private String command;
     private String lastCommand;
+    private boolean alive = true;
+    private double score;
 
 
     public Player(){
@@ -48,4 +50,8 @@ public class Player implements Serializable {
     public String getCommand() {return command;}
 
     public String getLastCommand() {return lastCommand;}
+
+    public boolean getAlive() {return alive;}
+
+    public double getScore() {return score;}
 }

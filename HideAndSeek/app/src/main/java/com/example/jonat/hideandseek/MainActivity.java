@@ -1,6 +1,8 @@
 package com.example.jonat.hideandseek;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission("android" + ""
+                + ".permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission("android.permission.ACCESS_COARSE_LOCATION") ==
+                        PackageManager.PERMISSION_DENIED || checkSelfPermission("android" + "" +
+                ".permission.INTERNET") == PackageManager.PERMISSION_DENIED)) {
+            requestPermissions(new String[]{"android.permission.ACCESS_FINE_LOCATION", "android"
+                    + ".permission.ACCESS_COARSE_LOCATION", "android.permission.INTERNET"}, 0);
+        }
 
         Button buttonNewGame = findViewById(R.id.NewGameButton);
         buttonNewGame.setOnClickListener(new View.OnClickListener(){

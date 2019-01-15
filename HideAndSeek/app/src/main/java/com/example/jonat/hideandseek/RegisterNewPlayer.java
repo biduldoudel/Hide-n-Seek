@@ -54,6 +54,8 @@ public class RegisterNewPlayer extends AppCompatActivity {
         setContentView(R.layout.activity_register_new_player);
 
         buttonReady = findViewById(R.id.buttonReady);
+        editTextCodeNumber = findViewById(R.id.editTextCodeNumber);
+        editTextUsername = findViewById(R.id.editTextUsername);
 
         Bundle extras = getIntent().getExtras();
         gameId = extras.getString("gameId");
@@ -63,19 +65,12 @@ public class RegisterNewPlayer extends AppCompatActivity {
         if (extras.getBoolean("registerNewGame")) {
             gameCode = extras.getString("gameCode");
 
-
-            editTextCodeNumber = findViewById(R.id.editTextCodeNumber);
             editTextCodeNumber.setText(gameCode);
             editTextCodeNumber.setEnabled(false);
-/*
-            Button buttonJoin = findViewById(R.id.buttonJoin);
-            buttonJoin.setVisibility(View.INVISIBLE);
-*/
+
             TextView textButton = findViewById(R.id.textView);
             textButton.setText("Please share this number with the other players !");
             Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
-
-            //getGameData();
         }
 
         switchTeam = findViewById(R.id.switchTeam);
@@ -173,7 +168,24 @@ public class RegisterNewPlayer extends AppCompatActivity {
                         if (nReadyPlayers >= nExpectedPlayers) {
                             Toast.makeText(getApplicationContext(), "This game seems to be full", Toast.LENGTH_LONG).show();
                         } else {
-                            if ((nExpectedPlayers - nReadyPlayers) == 2 && !masterSurvivorRegistered && !masterZombieRegistered && !role.equals("Master")) {
+                            boolean usernameTaken = false;
+                            for (DataSnapshot player : dataSnapshot.child(gameId).child("players").getChildren())
+                            {
+                                if(player.getKey().equals(username))
+                                    usernameTaken = true;
+                            }
+                            if(usernameTaken)
+                                Toast.makeText(getApplicationContext(), "Username taken, please chose another one", Toast.LENGTH_LONG).show();
+                            else if(role.equals("Master") && masterZombieRegistered && masterSurvivorRegistered){
+                                Toast.makeText(getApplicationContext(), "You need to chose a runner role", Toast.LENGTH_LONG).show();
+                            }
+                            else if(role.equals("Master") && team.equals("Survivor") && masterSurvivorRegistered){
+                                Toast.makeText(getApplicationContext(), "Master survivor is already registered, please chose another role", Toast.LENGTH_LONG).show();
+                            }
+                            else if(role.equals("Master") && team.equals("Zombie")  && masterZombieRegistered){
+                                Toast.makeText(getApplicationContext(), "Master zombie is already registered, please chose another role", Toast.LENGTH_LONG).show();
+                            }
+                            else if ((nExpectedPlayers - nReadyPlayers) == 2 && !masterSurvivorRegistered && !masterZombieRegistered && !role.equals("Master")) {
                                 Toast.makeText(getApplicationContext(), "You need to chose a master role", Toast.LENGTH_LONG).show();
                             } else if ((nExpectedPlayers - nReadyPlayers) == 1 && !masterSurvivorRegistered && (!role.equals("Master") || !team.equals("Survivor"))) {
                                 Toast.makeText(getApplicationContext(), "You need to chose the survivor master role", Toast.LENGTH_LONG).show();
@@ -184,6 +196,8 @@ public class RegisterNewPlayer extends AppCompatActivity {
                                 nReadyPlayers++;
                                 gamesRef.child(gameId).child("nReadyPlayers").setValue(nReadyPlayers);
                                 playerRegistered = true;
+                                editTextCodeNumber.setEnabled(false);
+                                editTextUsername.setEnabled(false);
                                 buttonReady.setEnabled(false);
                                 buttonReady.setText("Waiting for players");
                                 editTextCodeNumber.setEnabled(false);
