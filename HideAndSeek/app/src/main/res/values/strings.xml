@@ -6,26 +6,26 @@
 
     <string-array name="OverseerRules">
         <item>You are the overseer</item>
-        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
-        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+        <item>Your role is to guide your people to the targeted areas to collect resources</item>
+        <item>Be careful thought, if all the runners are caught by zombies, you will lose</item>
     </string-array>
 
     <string-array name="PsychicRules">
         <item>You are the psychic</item>
-        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
-        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+         <item>Your role is to guide your zombies to the survivors in order to eat them</item>
+        <item>Be careful thought, if the survivors get enough resources, they will got back in their HQ and you will lose</item>
     </string-array>
 
     <string-array name="ZombieRules">
         <item>You are a zombie</item>
-        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
-        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+        <item>Your role is to follow the psychic order to catch all the survivors</item>
+        <item>Be careful thought, if the survivors get enough resources, they will got back in their HQ and you will lose</item>
     </string-array>
 
     <string-array name="SurvivorRules">
         <item>You are a runner</item>
-        <!--    <item>Your role is to guide your people to the targeted area to collect resources</item>
-        <item>Be careful thought, if all of them are caught by the zombies, you will lose</item> -->
+        <item>Your role is to follow the overseer instructions to find resources</item>
+        <item>Be careful thought, if all the runners are caught by zombies, you will lose</item>
     </string-array>
 
     <array name="role">

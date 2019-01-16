@@ -54,7 +54,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runner_player);
 
-        //sendWearStart();
+        sendWearStart();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission("android" + ""
                 + ".permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_DENIED ||
@@ -65,7 +65,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
                     + ".permission.ACCESS_COARSE_LOCATION", "android.permission.INTERNET"}, 0);
         } else {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
         final Intent intent = getIntent();
 
@@ -83,57 +83,67 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
         gamesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long startTime = dataSnapshot.child(gameId).child("startTime").getValue(Long.class);
+                if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("GameOver")) {
+                    command1.setText("Game is over");
+                    command2.setText(dataSnapshot.child(gameId).child("winner").getValue(String.class) + " won. Please go back to HQ");
+                } else                 if (!dataSnapshot.child(gameId).child("players").child(username).child("alive").getValue(Boolean.class)) {
+                    command1.setText("You are dead");
+                    command2.setText("Please go back to HQ");
+                } else {
+                    long startTime = dataSnapshot.child(gameId).child("startTime").getValue(Long.class);
+                    if(startTime!=0)
+                        elapsedTime = Calendar.getInstance().getTime().getTime() - startTime;
+                    else
+                        elapsedTime = (long)0;
+                    if (command1.getText() != dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class)) {
+                        command2.setText(command1.getText());
+                        command = dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class);
+                        command1.setText(command);
 
-                elapsedTime = Calendar.getInstance().getTime().getTime() - startTime;
-                if (command1.getText() != dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class)) {
-                    command2.setText(command1.getText());
-                    command = dataSnapshot.child(gameId).child("players").child(username).child("command").getValue(String.class);
-                    command1.setText(command);
+                        vibrator.vibrate(250);
 
-                    vibrator.vibrate(250);
-                    /*
-                    Intent intentWear = new Intent(RunnerPlayer.this, WearService.class);
-                    intentWear.setAction(WearService.ACTION_SEND.MESSAGE.name());
-                    intentWear.putExtra(WearService.MESSAGE, command);
-                    intentWear.putExtra(WearService.PATH, BuildConfig.W_example_path_text);
-                    startService(intentWear);*/
-                }
+                        Intent intentWear = new Intent(RunnerPlayer.this, WearService.class);
+                        intentWear.setAction(WearService.ACTION_SEND.MESSAGE.name());
+                        intentWear.putExtra(WearService.MESSAGE, command);
+                        intentWear.putExtra(WearService.PATH, BuildConfig.W_example_path_text);
+                        startService(intentWear);
+                    }
 
-                if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("InProgress") && /*elapsedTime > (180000) &&*/ team.equals("Survivor")){
-                    for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()) {
-                        double targetLatitude = target.child("latitude").getValue(Double.class);
-                        double targetLongitude = target.child("longitude").getValue(Double.class);
-                        double d = coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude);
-                        if (d > 25 && onTargetKey == Integer.parseInt(target.getKey())) {
-                            onTargetKey = 0;
-                        } else if (d < 25 && onTargetKey == Integer.parseInt(target.getKey())) {
-                            Date currentDate = Calendar.getInstance().getTime();
-                            long dt = currentDate.getTime() - prevDate.getTime();
-                            if(dt>1000) {
-                                score = score + dt / 1000.0;
-                                gamesRef.child(gameId).child("players").child(username).child("score").setValue(score);
-                                prevDate = currentDate;
+                    if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("InProgress") && elapsedTime > (180000) && team.equals("Survivor")) {
+                        for (final DataSnapshot target : dataSnapshot.child(gameId).child("targets").getChildren()) {
+                            double targetLatitude = target.child("latitude").getValue(Double.class);
+                            double targetLongitude = target.child("longitude").getValue(Double.class);
+                            double d = coordinatesDistance(latitude, longitude, targetLatitude, targetLongitude);
+                            if (d > 25 && onTargetKey == Integer.parseInt(target.getKey())) {
+                                onTargetKey = 0;
+                            } else if (d < 25 && onTargetKey == Integer.parseInt(target.getKey())) {
+                                Date currentDate = Calendar.getInstance().getTime();
+                                long dt = currentDate.getTime() - prevDate.getTime();
+                                if (dt > 1000) {
+                                    score = score + dt / 1000.0;
+                                    gamesRef.child(gameId).child("players").child(username).child("score").setValue(score);
+                                    prevDate = currentDate;
+                                }
+                            } else if (d < 25 && onTargetKey != Integer.parseInt(target.getKey())) {
+                                onTargetKey = Integer.parseInt(target.getKey());
+                                prevDate = Calendar.getInstance().getTime();
                             }
-                        } else if (d < 25 && onTargetKey != Integer.parseInt(target.getKey())) {
-                            onTargetKey = Integer.parseInt(target.getKey());
-                            prevDate = Calendar.getInstance().getTime();
+
                         }
+                    } else if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("InProgress") && elapsedTime > (180000) && team.equals("Zombie")) {
+                        for (final DataSnapshot player : dataSnapshot.child(gameId).child("players").getChildren()) {
+                            if (player.child("team").getValue(String.class).equals("Survivor") && player.child("role").getValue(String.class).equals("Runner")) {
+                                double survivorLat = player.child("latitude").getValue(Double.class);
+                                double survivorLong = player.child("longitude").getValue(Double.class);
 
-                    }
-                } else if (dataSnapshot.child(gameId).child("gameStatus").getValue(String.class).equals("InProgress") /*&& elapsedTime > (180000)*/ && team.equals("Zombie")){
-                for(final DataSnapshot player : dataSnapshot.child(gameId).child("players").getChildren()){
-                    if(player.child("team").getValue(String.class).equals("Survivor")){
-                        double survivorLat = player.child("latitude").getValue(Double.class);
-                        double survivorLong = player.child("longitude").getValue(Double.class);
+                                if (coordinatesDistance(latitude, longitude, survivorLat, survivorLong) < 10) {
+                                    String temp = player.getKey();
+                                    gamesRef.child(gameId).child("players").child(temp).child("alive").setValue(false);
+                                }
 
-                        if(coordinatesDistance(latitude, longitude, survivorLat, survivorLong) < 2){
-                            String temp = player.getKey();
-                            gamesRef.child(gameId).child("players").child(temp).child("alive").setValue(false);
+                            }
                         }
-
                     }
-                }
                 }
             }
 
@@ -151,7 +161,7 @@ public class RunnerPlayer extends AppCompatActivity implements LocationListener 
 
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
     }
 

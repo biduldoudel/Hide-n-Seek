@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -64,11 +65,15 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
     List<Double> targetLat = new ArrayList<>();
     List<Double> targetLong = new ArrayList<>();
     private Double totScore = 0.0;
+    private int nDeadSurvivors;
+    TextView scoreView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_player);
+
+        scoreView = findViewById(R.id.scoreView);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission("android" + ""
                 + ".permission.ACCESS_FINE_LOCATION") == PackageManager.PERMISSION_DENIED ||
@@ -120,7 +125,9 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                     marekersInitialized = true;
-                } else if (marekersInitialized == true && mapReady && mapInitialized)
+                } else if (marekersInitialized == true && mapReady && mapInitialized) {
+                    totScore = 0.0;
+                    nDeadSurvivors = 0;
                     for (final DataSnapshot player : dataSnapshot.child(gameId).child("players").getChildren()) {
                         String tempUsername = player.getKey();
                         double latitude = player.child("latitude").getValue(Double.class);
@@ -141,6 +148,8 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                         }
                         if (player.child("team").getValue(String.class).equals("Survivor") && mapInitialized && team.equals("Survivor")) {
                             totScore += dataSnapshot.child(gameId).child("players").child(player.getKey()).child("score").getValue(Double.class);
+                            if (!playerAlive)
+                                nDeadSurvivors += 1;
                             for (Circle circle : circles) {
                                 circle.setStrokeColor(Color.BLUE);
                             }
@@ -155,9 +164,21 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         }
                     }
+                    if (team.equals("Survivor")) {
+                        if (nDeadSurvivors >= dataSnapshot.child(gameId).child("nSurvivors").getValue(Integer.class)) {
+                            gamesRef.child(gameId).child("gameStatus").setValue("GameOver");
+                            gamesRef.child(gameId).child("winner").setValue("Zombies");
+                        } else if (totScore > dataSnapshot.child(gameId).child("nSurvivors").getValue(Integer.class) * 300) {
+                            gamesRef.child(gameId).child("gameStatus").setValue("GameOver");
+                            gamesRef.child(gameId).child("winner").setValue("Survivors");
+                        }
+                        scoreView.setText("Score: "+ totScore.toString());
+                        gamesRef.child(gameId).child("totSurvivorsScore").setValue(totScore);
+                    }
+                    else
+                        scoreView.setText("");
+                }
 
-                    gamesRef.child(gameId).child("totSurvivorsScore").setValue(totScore);
-                    totScore = 0.0;
 
                 if (mapInitialized == false && mapReady) {
                     double zombieMasterLat = 0;
@@ -208,7 +229,6 @@ public class MasterPlayer extends AppCompatActivity implements OnMapReadyCallbac
                                 gamesRef.child(gameId).child("targets").child(Integer.toString(i)).child("longitude").setValue(randomLong);
                             }
                             gamesRef.child(gameId).child("gameStatus").setValue("InProgress");
-
                         }
                         mapInitialized = true;
                         gamesRef.child(gameId).child("startTime").setValue(Calendar.getInstance().getTime().getTime());

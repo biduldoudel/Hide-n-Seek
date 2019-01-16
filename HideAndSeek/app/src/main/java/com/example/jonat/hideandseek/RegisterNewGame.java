@@ -100,7 +100,7 @@ public class RegisterNewGame extends AppCompatActivity {
 
     private void addGameToFirebaseDB() {
         gamesRef = gamesGetRef.push();
-        Game game = new Game(4, "", seekBarPlayerNumber.getProgress() + 2);
+        Game game = new Game(4, "", seekBarPlayerNumber.getProgress() + 4);
         gamesRef.setValue(game);
     }
 
@@ -125,7 +125,7 @@ public class RegisterNewGame extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Update the number of player with the seek bar
-                textViewPlayerNumber.setText(Integer.toString(progress + 2));
+                textViewPlayerNumber.setText(Integer.toString(progress + 4));
             }
 
             @Override

@@ -70,7 +70,6 @@ public class RegisterNewPlayer extends AppCompatActivity {
 
             TextView textButton = findViewById(R.id.textView);
             textButton.setText("Please share this number with the other players !");
-            Toast.makeText(getApplicationContext(), gameId, Toast.LENGTH_LONG).show();
         }
 
         switchTeam = findViewById(R.id.switchTeam);

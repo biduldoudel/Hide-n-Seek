@@ -8,6 +8,7 @@ public class Game implements Serializable {
     protected String gameId;
     protected String gameCode;
     protected String gameStatus;
+    protected String winner;
     protected String zone_center;
     protected String zone_diameter;
     int playerNumber;
@@ -23,6 +24,7 @@ public class Game implements Serializable {
     long startTime;
 
 
+
     public Game(int playerNumber, String gameCode, int nExpectedPlayer) {
         //this.gameId = gameId;
         this.gameCode = gameCode;
@@ -35,6 +37,7 @@ public class Game implements Serializable {
         this.nZombies=0;
         this.masterZombieRegistered = false;
         this.masterSurvivorRegistered = false;
+        this.winner = "";
         //this.gameReady = false;
     }
 
@@ -63,6 +66,8 @@ public class Game implements Serializable {
     public int getTotSurvivorsScore() {return totSurvivorsScore;}
 
     public long getStartTime() {return startTime;}
+
+    public String getWinner() {return winner;}
 
     //public boolean getGameReady() {return gameReady;}
 }

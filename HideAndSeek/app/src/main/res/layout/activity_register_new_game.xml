@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_light_fill"
-    tools:context=".JoinNewGame">
+    tools:context=".RegisterNewGame">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,10 +49,11 @@
 
         <Button
             android:id="@+id/buttonNewGame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="New Game !" />
+            android:text="New Game !"
+            android:textSize="18sp" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

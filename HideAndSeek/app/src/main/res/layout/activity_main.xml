@@ -63,22 +63,19 @@
             <Button
                 android:id="@+id/NewGameButton"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/text_background_scratch1_fill"
-
-                android:text="New Game!" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="New Game!"
+                android:textSize="18sp" />
 
 
             <Button
                 android:id="@+id/JoinGameButton"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Join Game!"
-                android:layout_weight="1"
-                android:background="@drawable/text_background_scratch1_fill"
-
-                />
+                android:textSize="18sp" />
 
             <Space
                 android:layout_width="match_parent"

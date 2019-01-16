@@ -74,20 +74,27 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.2" />
 
-            <Switch
-                android:id="@+id/switchTeam"
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Team"
-                android:textAllCaps="false"
-                android:textSize="18sp"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/switchTeam"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:fontFamily="@font/bloodpaint"
-                android:textColor="@android:color/black"/>
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2" />
+                android:layout_weight="0.5" />
 
             <TextView
                 android:id="@+id/TextViewTeam"
@@ -109,20 +116,27 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.2" />
 
-            <Switch
-                android:id="@+id/switchRole"
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Role"
-                android:textSize="18sp"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/switchRole"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:fontFamily="@font/bloodpaint"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2" />
+                android:layout_weight="0.5" />
 
             <TextView
                 android:id="@+id/TextViewRole"
@@ -141,7 +155,7 @@
 
         <Button
             android:id="@+id/buttonReady"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Join Game"

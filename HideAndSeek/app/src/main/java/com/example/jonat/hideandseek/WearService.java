@@ -239,15 +239,12 @@ public class WearService extends WearableListenerService {
                     @Override
                     public void onSuccess(Integer integer) {
                         Log.v(TAG, "Sent message to " + nodeId + ". Result = " + integer);
-                        Toast.makeText(getApplicationContext(), "Message send succesful", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, "Message not sent. " + e.getMessage());
-                        Toast.makeText(getApplicationContext(), "Message send failed", Toast.LENGTH_SHORT).show();
-
                     }
                 });
     }
