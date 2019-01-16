@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "491588559605",
+    "firebase_url": "https://hideandseek-e7169.firebaseio.com",
+    "project_id": "hideandseek-e7169",
+    "storage_bucket": "hideandseek-e7169.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491588559605:android:c24da24accccd42a",
+        "android_client_info": {
+          "package_name": "com.example.jonat.hideandseek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491588559605-oas9vqf67d9jpbm5lbgdjv67d5rnf180.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jonat.hideandseek",
+            "certificate_hash": "cc5587f49e2d0e01d1fdf1624111767d5169c478"
+          }
+        },
+        {
+          "client_id": "491588559605-n161bf40ltbs0mi3q3cnbrlnt4h1ni9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7roQXedWtlIDNDPWncbyWPQSNGDO6hFs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491588559605-n161bf40ltbs0mi3q3cnbrlnt4h1ni9p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

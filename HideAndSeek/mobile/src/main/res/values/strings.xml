@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">HideAndSeek</string>
+    <string name="title_activity_register_join_game">RegisterJoinGame</string>
+    <string name="google_places_api_key">AIzaSyDC33O0weUss_PPTa2x9DBXTd5Kpb5mxXs</string>
+    <string name="WaitingFroPlayers">WaitingForPlayers</string>
+
+    <string-array name="OverseerRules">
+        <item>You are the overseer</item>
+        <item>Your role is to guide your people to the targeted areas to collect resources</item>
+        <item>Be careful thought, if all the runners are caught by zombies, you will lose</item>
+    </string-array>
+
+    <string-array name="PsychicRules">
+        <item>You are the psychic</item>
+        <item>Your role is to guide your zombies to the survivors in order to eat them</item>
+        <item>Be careful thought, if the survivors get enough resources, they will got back in their HQ and you will lose</item>
+    </string-array>
+
+    <string-array name="ZombieRules">
+        <item>You are a zombie</item>
+        <item>Your role is to follow the psychic order to catch all the survivors</item>
+        <item>Be careful thought, if the survivors get enough resources, they will got back in their HQ and you will lose</item>
+    </string-array>
+
+    <string-array name="SurvivorRules">
+        <item>You are a runner</item>
+        <item>Your role is to follow the overseer instructions to find resources</item>
+        <item>Be careful thought, if all the runners are caught by zombies, you will lose</item>
+    </string-array>
+
+    <array name="role">
+        <item>Player</item>
+        <item>Master</item>
+    </array>
+
+    <array name="team">
+        <item>Zombie</item>
+        <item>Survival</item>
+    </array>
+
+    <array name="statut">
+        <item>Waiting</item>
+        <item>Running</item>
+        <item>Ended</item>
+    </array>
+
+    <array name="directionCommand">
+        <item>Right</item>
+        <item>Left</item>
+        <item>Forward</item>
+        <item>Backward</item>
+    </array>
+
+    <array name="speedCommand">
+        <item>Stay</item>
+        <item>Run</item>
+        <item>Move</item>
+    </array>
+
+</resources>

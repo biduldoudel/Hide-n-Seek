@@ -1,1 +1,1 @@
-include ':app', ':hideandseekwear'
+include ':mobile', ':wear'
